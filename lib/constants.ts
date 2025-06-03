@@ -1,4 +1,4 @@
-import { User, Employee, Product, Supplier, Customer, Project, Asset, Document, SupportTicket, Account, Sale, PurchaseOrder, Task, Transaction } from '@/types';
+import { User, Employee, Product, Supplier, Customer, Project, Asset, Document, SupportTicket, Account, Sale, PurchaseOrder, Task, Transaction, DashboardStats } from '@/types';
 
 // Demo User for authentication
 export const CURRENT_USER: User = {

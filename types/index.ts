@@ -324,7 +324,7 @@ export interface DashboardStats {
     lastMonth: number;
     growth: number;
     salesByCategory: { category: string; amount: number }[];
-    recentSales: Sale[];
+    recentSales: any[]; // Ganti dengan tipe asli kalau tahu
   };
   inventory: {
     totalProducts: number;
