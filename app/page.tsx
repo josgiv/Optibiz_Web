@@ -1,103 +1,70 @@
-import Image from "next/image";
+import { DASHBOARD_STATS } from "@/lib/constants";
+import StatsCard from "@/components/dashboard/stats-card";
+import SalesChart from "@/components/dashboard/sales-chart";
+import RecentSales from "@/components/dashboard/recent-sales";
+import InventoryStatus from "@/components/dashboard/inventory-status";
+import CategoryDistribution from "@/components/dashboard/category-distribution";
+import OverviewTabs from "@/components/dashboard/overview-tabs";
+import { DollarSign, Users, Package, ShoppingCart, BarChart3 } from "lucide-react";
 
-export default function Home() {
+export default function DashboardPage() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
+    <div className="space-y-6">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <StatsCard
+          title="Total Sales"
+          value={`$${DASHBOARD_STATS.sales.thisMonth.toLocaleString()}`}
+          description="This month"
+          trend="up"
+          trendValue={`${DASHBOARD_STATS.sales.growth}%`}
+          icon={<DollarSign className="h-4 w-4" />}
         />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+        
+        <StatsCard
+          title="Active Customers"
+          value={DASHBOARD_STATS.customers.active}
+          description={`${DASHBOARD_STATS.customers.new} new this month`}
+          icon={<Users className="h-4 w-4" />}
+        />
+        
+        <StatsCard
+          title="Inventory Items"
+          value={DASHBOARD_STATS.inventory.totalProducts}
+          description={`${DASHBOARD_STATS.inventory.lowStock} low stock items`}
+          icon={<Package className="h-4 w-4" />}
+        />
+        
+        <StatsCard
+          title="Profit"
+          value={`$${DASHBOARD_STATS.finance.profit.toLocaleString()}`}
+          description={`${((DASHBOARD_STATS.finance.profit / DASHBOARD_STATS.finance.revenue) * 100).toFixed(1)}% margin`}
+          trend="up"
+          icon={<BarChart3 className="h-4 w-4" />}
+        />
+      </div>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+        {/* Sales Chart - Takes 4 columns on all screen sizes */}
+        <SalesChart 
+          data={DASHBOARD_STATS.finance.cashflow} 
+          title="Cash Flow"
+          description="Income vs expenses over time"
+        />
+        
+        {/* Overview Tabs - Takes 3 columns on large screens */}
+        <OverviewTabs stats={DASHBOARD_STATS} />
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+        {/* Recent Sales - Takes 4 columns on large screens */}
+        <RecentSales sales={DASHBOARD_STATS.sales.recentSales} />
+        
+        {/* Inventory Status - Takes 3 columns on large screens */}
+        <div className="col-span-4 lg:col-span-3 grid gap-4 grid-cols-1">
+          <InventoryStatus products={DASHBOARD_STATS.inventory.topSelling} />
+          <CategoryDistribution data={DASHBOARD_STATS.sales.salesByCategory} />
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </div>
     </div>
   );
 }
